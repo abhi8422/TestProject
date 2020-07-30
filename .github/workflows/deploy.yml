@@ -31,10 +31,10 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
       - name: Upload APK
-          uses: actions/upload-artifact@v2
-          with:
-            name: app
-            path: app/build/outputs/bundle/release/
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: app/build/outputs/bundle/release/
 
       - name: Tag Release
         run: |
