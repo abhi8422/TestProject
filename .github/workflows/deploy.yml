@@ -17,15 +17,15 @@ jobs:
           java-version: 1.8
       - name: Build
         run: ./gradlew build
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: app
-          path: app/build/outputs/apk/release/app-${GITHUB_REF##*/}.apk
 
       - name: Assemble Release Bundle
         run: |
           ./gradlew bundleRelease
+      - name: Upload APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: app
+          path: app/build/outputs/apk/release/app-release.apk
       - name: Sign Release
         uses: r0adkll/sign-android-release@v1
         with:
