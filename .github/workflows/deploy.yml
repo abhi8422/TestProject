@@ -18,6 +18,11 @@ jobs:
 
       - name: Build
         run: ./gradlew build
+      - name: Upload APK
+          uses: actions/upload-artifact@v1
+          with:
+            name: app
+            path: app/build/outputs/apk/release/app-${GITHUB_REF##*/}.apk
 
       - name: Assemble Release Bundle
         run: |
