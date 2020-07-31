@@ -1,9 +1,7 @@
-name: Deploy to Alpha
+name: Create signed apk manually
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   deploy:
