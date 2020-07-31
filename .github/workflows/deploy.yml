@@ -15,18 +15,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-
       - name: Build
         run: ./gradlew build
-      - name: Upload APK
-          uses: actions/upload-artifact@v1
-          with:
-            name: app
-            path: app/build/outputs/apk/release/app-${GITHUB_REF##*/}.apk
 
       - name: Assemble Release Bundle
         run: |
           ./gradlew bundleRelease
+
       - name: Sign Release
         uses: r0adkll/sign-android-release@v1
         with:
@@ -35,6 +30,11 @@ jobs:
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: app/build/outputs/bundle/release/
 
       - name: Tag Release
         run: |
