@@ -12,7 +12,14 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    signingConfigs {
+        release {
+            storeFile file('/Users/apple/Desktop/Android Projects/TestProject/app/Extranet.jks')
+            storePassword "ExtranetDAEP"
+            keyAlias "key0"
+            keyPassword "ExtranetDAEP"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
