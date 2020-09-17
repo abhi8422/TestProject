@@ -1,4 +1,4 @@
-name: Create signed apk manually
+name: Create Signed APK Manually
 
 on:
   workflow_dispatch:
