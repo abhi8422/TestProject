@@ -16,7 +16,7 @@ jobs:
       - name: Build
         run: ./gradlew build
 
-      - name: Assemble Release Bundle
+      - name: Assemble Release Apk
         run: |
           ./gradlew assembleRelease
 
