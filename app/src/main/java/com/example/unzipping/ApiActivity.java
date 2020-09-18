@@ -101,5 +101,61 @@ Context context;
         }
 
     }
+    public void getRoutesDataCompressedJSON(int routeID, int workorder){
+        String resultString="";
+        SSLConection.allowAllSSL();
+        SoapObject soapObject=new SoapObject(NAME_SPACE,METHOD_NAME_getRoutesDataCompressedJSON);
+        soapObject.addProperty("RouteID",routeID);
+        soapObject.addProperty("WorkID",workorder);
+        SoapSerializationEnvelope envelope=new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.dotNet=true;
+        envelope.setOutputSoapObject(soapObject);
+        SSLConection.allowAllSSL();
+        HttpTransportSE httpTransportSE=new HttpTransportSE(WSDL_URL,1000000000);
+        try {
+            httpTransportSE.call(SOAP_ACTION+"/"+METHOD_NAME_getRoutesDataCompressedJSON,envelope);
+            result = (SoapObject) envelope.bodyIn;
+            resultString=result.getProperty(0).toString();
+//            String line;
+//            ByteArrayOutputStream bos = new ByteArrayOutputStream(resultString.length());
+//            GZIPOutputStream gzip = new GZIPOutputStream(bos);
+//            gzip.write(resultString.getBytes("UTF-8"));
+//            gzip.close();
+//            byte[] compressed = bos.toByteArray();
+//            bos.close();
+//
+//            ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
+//            GZIPInputStream gis = new GZIPInputStream(bis);
+//            BufferedReader br = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
+//            StringBuilder sb = new StringBuilder();
+//            while((line = br.readLine()) != null) {
+//                sb.append(line);
+//            }
+//            br.close();
+//            gis.close();
+//            bis.close();
+            byte[] compressed = Base64.decode(resultString,0);
+
+                GZIPInputStream gzipInputStream = new GZIPInputStream(
+                        new ByteArrayInputStream(compressed, 4,
+                                compressed.length - 4));
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                for (int value = 0; value != -1;) {
+                    value = gzipInputStream.read();
+                    if (value != -1) {
+                        baos.write(value);
+                    }
+                }
+                gzipInputStream.close();
+                baos.close();
+                String sReturn = new String(baos.toByteArray(), "UTF-8");
+                //System.out.println("Output::"+sReturn);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

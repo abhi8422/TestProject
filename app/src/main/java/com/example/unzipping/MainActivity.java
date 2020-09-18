@@ -226,7 +226,60 @@ public class MainActivity extends AppCompatActivity {
             btn.setText("Unzipping Done");
         }
     }
-    public class NetworkAsync extends AsyncTask{
+    public class AsyncZip2 extends AsyncTask{
+        String zipFile,location;
+        public AsyncZip2(String zipFile,String location){
+            this.location=location;this.zipFile=zipFile;
+        }
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            try {
+                File f = new File(location);
+                if (!f.isDirectory()) {
+                    f.mkdirs();
+                }
+                ZipInputStream zin = new ZipInputStream(new FileInputStream(zipFile));
+                BufferedInputStream bin=new BufferedInputStream(zin);
+                try {
+                    ZipEntry ze = null;
+                    while ((ze = zin.getNextEntry()) != null) {
+                        String path = location + File.separator + ze.getName();
+                        System.out.println("Name of files inside zip:"+ze.getName());
+                        File unzipFile = new File(path);
+                        if (ze.isDirectory()) {
+                            if (!unzipFile.isDirectory()) {
+                                unzipFile.mkdirs();
+                            }
+                        } else {
+                            FileOutputStream fout = new FileOutputStream(path, false);
+                            BufferedOutputStream bout=new BufferedOutputStream(fout);
+                            try {
+                                for (int c = bin.read(); c != -1; c = bin.read()) {
+                                    bout.write(c);
+                                }
+                                zin.closeEntry();
+                            } finally {
+                                bout.close();
+                            }
+                        }
+                    }
+                } finally {
+                    zin.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "Unzip exception", e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            btn.setText("Unzipping Done");
+        }
+    }
+      public class NetworkAsync extends AsyncTask{
             int rid,wid;
         public NetworkAsync(int rid, int wid) {
             this.rid=rid;this.wid=wid;
